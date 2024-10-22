@@ -1,0 +1,97 @@
+.scheduler {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.scheduler,
+.scheduler tr,
+.scheduler th,
+.scheduler td {
+  border: 1px solid rgb(var(--bs-black));
+  height:6vh;
+  line-height:6vh;
+  /* height: 25px;
+  line-height: 25px; */
+}
+
+.scheduler td,
+.scheduler th {
+  position: relative;
+  font-size: 12px;
+  text-align: center;
+}
+
+.scheduler .scheduler-hour-toggle,
+.scheduler .scheduler-hour {
+  width: 15px;
+}
+
+.scheduler-time-title,
+.scheduler-week-title {
+  padding: 0 5px;
+}
+
+.scheduler-time-title {
+  text-align: right;
+}
+
+.scheduler-week-title {
+  text-align: left;
+}
+
+.scheduler .slash {
+  width: 80px;
+  height: 55px;
+}
+
+.scheduler-day-toggle,
+.scheduler-half-toggle,
+.scheduler-hour-toggle {
+  cursor: pointer;
+}
+
+.scheduler>tfoot>tr>td {
+  text-align: left;
+  padding: 0 5px;
+}
+
+.scheduler-control-wrap {
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  padding:5px 0;
+}
+.scheduler-tips {
+  font-size:15px;
+  margin:0 0 0 15px;
+}
+.scheduler-reset {
+  display:block;
+  background:rgb(var(--bs-black));
+  border-radius:10px;
+  width:70px;
+  height:35px;
+  line-height:35px;
+  text-align:center;
+  color:rgb(var(--bs-white));
+}
+
+.scheduler-active {
+  background-color: rgb(var(--bs-blue-dodger-blue))
+}
+
+.scheduler-disabled .scheduler-day-toggle,
+.scheduler-disabled .scheduler-half-toggle,
+.scheduler-disabled .scheduler-hour-toggle {
+  cursor: default;
+}
+
+.scheduler-disabled .scheduler-active {
+  background-color: rgb(var(--bs-green-olive))
+}

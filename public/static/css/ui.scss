@@ -1,0 +1,10 @@
+@import 'zenith/_var',// 변수 정의 파일
+        'zenith/_reset', // 기본 스타일 초기화
+        'zenith/_layout', //leftMenu, login, join,my page, main
+        'zenith/_sub', //서브 페이지 style
+        'zenith/_table',// 테이블 관련 스타일
+        'zenith/_modal', //모달창관련 style
+        "zenith/_animation", //animation
+        "zenith/_auto"; //자동화목록
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons"; //icon
+

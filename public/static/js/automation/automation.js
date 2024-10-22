@@ -1,0 +1,1245 @@
+var selectedCell = [];
+//좌측 탭 조건 텍스트
+function conditionText($this){
+    let name = $this.attr('name');
+    let trId = $this.closest('tr').attr('id');
+
+    if(name == 'type'){
+        value = $this.find('option:selected').text()+" - ";
+        $("#text-"+trId+" .typeText").html(value);
+    }
+    
+    if(name == 'type_value_status'){
+        $("#text-"+trId+" .typeValueText").text('');
+        value = $this.find('option:selected').text();
+        $("#text-"+trId+" .typeValueText").html(value);
+    }
+
+    if(name == 'type_value'){
+        $("#text-"+trId+" .typeValueText").text('');
+        value = $this.val();
+        $("#text-"+trId+" .typeValueText").html(value);
+    }
+
+    if(name == 'compare'){
+        $("#text-"+trId+" .compareText").text('');
+        value = $this.find('option:selected').text();
+        $("#text-"+trId+" .compareText").html(value);
+    }
+}
+//조건
+function addConditionRow(uniqueId){
+    var row = `
+    <tr id="${uniqueId}">
+        <td>
+            <div class="form-flex">
+                <select name="type" class="form-select conditionType">
+                    <option value="">조건 항목</option>
+                    <option value="status">상태</option>
+                    <option value="budget">예산</option>
+                    <option value="dbcost">DB단가</option>
+                    <option value="unique_total">유효DB</option>
+                    <option value="spend">지출액</option>
+                    <option value="margin">수익</option>
+                    <option value="margin_rate">수익률</option>
+                    <option value="sale">매출액</option>
+                    <option value="conversion">DB전환률</option>
+                </select>
+                <select name="type_value_status" class="form-select conditionTypeValueStatus" style="display: none;">
+                    <option value="">상태값 선택</option>
+                    <option value="ON">ON</option>
+                    <option value="OFF">OFF</option>
+                </select>
+                <input type="text" name="type_value" class="form-control conditionTypeValue" placeholder="조건값" oninput="onlyNumberLeadingDashAndDot(this);">
+            </div>
+        </td>
+        <td>
+            <div class="form-flex">
+                <select name="compare" class="form-select conditionCompare">
+                    <option value="">일치여부</option>
+                    <option value="greater">초과</option>
+                    <option value="greater_equal">보다 크거나 같음</option>
+                    <option value="less">미만</option>
+                    <option value="less_equal">보다 작거나 같음</option>
+                    <option value="equal">같음</option>
+                    <option value="not_equal">같지않음</option>
+                </select>
+            </div>
+        </td>
+        <td>
+            <button class="deleteBtn" style="width:20px;flex:0">
+                <i class="fa fa-times"></i>
+            </button>
+        </td>
+    </tr>`;
+    var rowText = `<p id="text-${uniqueId}"><span class="typeText"></span><span class="typeValueText"></span><span class="compareText"></span></p>`;
+    $('#conditionTable tbody').append(row);
+    $('#condition-tab').append(rowText);
+}
+
+//매체/분류/ID/제목/상태 table
+function getTargetAdvs(targetSearchData){
+    targetTable = $('#targetTable').DataTable({
+        "destroy": true,
+        "autoWidth": true,
+        "processing" : true,
+        "serverSide" : true,
+        "responsive": true,
+        "searching": false,
+        "ordering": true,
+        "deferRender": false,
+        'lengthChange': false,
+        'pageLength': 10,
+        "info": false,
+        "ajax": {
+            "url": "/automation/adv",
+            "data": targetSearchData,
+            "type": "GET",
+            "contentType": "application/json",
+            "dataType": "json",
+            "dataSrc": function(res){
+                return res.data;
+            }
+        },
+        "columnDefs": [
+            { targets: [5], orderable: false},
+        ],
+        "columns": [
+            { "data": "media", "width": "12%"},
+            { "data": "type", "width": "12%"},
+            { "data": "id", "width": "26%"},
+            { "data": "name", "width": "30%"},
+            { "data": "status", "width": "12%",},
+            { 
+                "data": null, 
+                "width": "8%",
+                "render": function(){
+                    let button = '<button class="target-btn">적용</button>';
+                    return button;
+                }
+            },
+        ],
+        "createdRow": function(row, data, dataIndex) {
+            $(row).attr("data-id", data.media+"_"+data.type+"_"+data.id);
+        },
+        "language": {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/ko.json',
+        },
+        "drawCallback": function(settings) {
+            if($('#targetCheckedTable tbody tr').length > 0){
+                $selectedTargetRow = $('#targetCheckedTable tbody tr').data('id');
+                $('#targetTable tbody tr[data-id="'+$selectedTargetRow+'"]').addClass('selected')
+            }else if ($('#targetTable tbody tr').length === 0) {
+                addNoDataMessage('targetTable', 6);
+            }
+        },
+        "initComplete": function(settings, json) {
+            // 열 너비 강제 설정
+            $('#logTable').find('th, td').css('width', '');
+        }
+    });
+}
+
+function getExecAdvs(data){
+    execTable = $('#execTable').DataTable({
+        "destroy": true,
+        "autoWidth": true,
+        "processing" : true,
+        "serverSide" : true,
+        "responsive": true,
+        "searching": false,
+        "ordering": true,
+        "deferRender": false,
+        'lengthChange': false,
+        'pageLength': 10,
+        "info": false,
+        "ajax": {
+            "url": "/automation/adv",
+            "data": data,
+            "type": "GET",
+            "contentType": "application/json",
+            "dataType": "json",
+            "dataSrc": function(res){
+                return res.data;
+            }
+        },
+        "columns": [
+            { "data": "media", "width": "10%"},
+            { "data": "type", "width": "10%"},
+            { "data": "id", "width": "30%"},
+            { "data": "name", "width": "40%"},
+            { "data": "status", "width": "10%"},
+        ],
+        "createdRow": function(row, data, dataIndex) {
+            $(row).attr("data-id", data.media+"_"+data.type+"_"+data.id);
+        },
+        "language": {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/ko.json',
+        },
+    });
+}
+
+//유효성 검사
+function validationData(){
+    let $operation = $('input[name=operation]:checked').length;
+    let $selectTarget = $('#targetSelectTable tbody tr').length;
+    let $selectExec = $('#execSelectTable tbody tr').length;
+    let $target_create_type = $('input[name=target_create_type]:checked').val();
+    let $subject = $('#detailTable input[name=subject]').val();
+    let $slack_webhook = $('#slackSendTable input[name="slack_webhook"]').val();
+    let $slack_msg = $('#slackSendTable input[name="slack_msg"]').val();
+
+    if (!selectedCell || Object.keys(selectedCell).length === 0) {
+        alert('일정을 지정해주세요.');
+        $('#schedule-tab').trigger('click');
+        return false;
+    }
+
+    //대상 선택항목이 있을경우
+    if($selectTarget > 0){
+        if(!$operation){
+            alert('일치조건을 선택해주세요.');
+            $('#condition-tab').trigger('click');
+            $('input[name=operation]').focus();
+            return false;
+        }
+
+        var eachValid = true;
+        $('tr[id^="condition-"]').each(function() {
+            var $row = $(this);
+            var $conditionType = $row.find('select[name=type]').val();
+            var $conditionTypeValueStatus = $row.find('select[name=type_value_status]').val();
+            var $conditionTypeValue = $row.find('input[name=type_value]').val();
+            var $conditionCompare = $row.find('select[name=compare]').val();
+
+            if(!$conditionType){
+                alert('조건항목을 선택해주세요.');
+                $('#condition-tab').trigger('click');
+                $row.find('select[name=type]').focus();
+                eachValid = false;
+                return false;
+            }
+
+            if($conditionType == 'status'){
+                if(!$conditionTypeValueStatus){
+                    alert('상태값을 선택해주세요.');
+                    $('#condition-tab').trigger('click');
+                    $row.find('select[name=type_value_status]').focus();
+                    eachValid = false;
+                    return false;
+                }
+            }else{
+                if(!$conditionTypeValue){
+                    alert('조건값을 입력해주세요.');
+                    $('#condition-tab').trigger('click');
+                    $row.find('input[name=type_value]').focus();
+                    eachValid = false;
+                    return false;
+                }
+            }
+
+            if(!$conditionCompare){
+                alert('일치여부를 선택해주세요.');
+                $('#condition-tab').trigger('click');
+                $row.find('select[name=compare]').focus();
+                eachValid = false;
+                return false;
+            }
+        });
+
+        if(!eachValid){
+            return false;
+        }
+    }else{
+        var hasValue = false;
+        $('tr[id^="condition-"]').find('input, select').each(function() {
+            if($(this).val()){
+                hasValue = true;
+                return false;
+            }
+        });
+
+        if(hasValue){
+            alert('조건을 설정하기 위해서 대상을 적용해주세요.');
+            $('#condition-tab').trigger('click');
+            return false;
+        }
+    }
+
+    if(!$selectExec > 0){
+        alert('실행항목을 추가해주세요.');
+        $('#preactice-tab').trigger('click');
+        $('#showExecAdv').focus();
+        return false;
+    }
+
+    var execCheck = true;
+    var execCheckMsg = '';
+    var focusTarget = null;
+    $('#execSelectTable tbody tr').each(function() {
+        let exec_order = $(this).find('td:first input[name=exec_order]');
+        let exec_condition_type = $(this).find('select[name=exec_condition_type]');
+        let exec_condition_type_budget = $(this).find('select[name=exec_condition_type_budget]');
+        let exec_condition_value = '';
+        if(exec_order.val() == '') {      
+            execCheck = false;
+            execCheckMsg = '순서를 입력해주세요.';
+            focusTarget = exec_order;
+            return false;
+        }
+
+        if(exec_condition_type.val() == 'status'){
+            exec_condition_value_input = $(this).find('select[name=exec_condition_value_status]');
+            exec_condition_value = exec_condition_value_input.val();
+        }else if(exec_condition_type.val() == 'budget'){
+            exec_condition_value_input = $(this).find('input[name=exec_condition_value]');
+            exec_condition_value = exec_condition_value_input.val();
+        }else{
+            execCheck = false;
+            execCheckMsg = '실행항목을 선택해주세요.';
+            focusTarget = exec_condition_type;
+            return false;
+        }
+
+        if(exec_condition_value == '') {      
+            execCheck = false;
+            execCheckMsg = '세부항목을 입력해주세요.';
+            focusTarget = exec_condition_value_input;
+            return false;
+        }
+
+        if(exec_condition_type.val() == 'budget'){
+            if(exec_condition_type_budget.val() == ''){
+                execCheck = false;
+                execCheckMsg = '단위를 선택해주세요.';
+                focusTarget = exec_condition_type_budget;
+                return false;
+            }
+        }
+    });
+
+    if(!execCheck){
+        $('#preactice-tab').trigger('click');
+        alert(execCheckMsg);
+        focusTarget.focus();
+        return false;
+    }
+
+    if($target_create_type == 'target_seperate'){
+        let isMatchingRows = true;
+        let targetRows = $('#targetSelectTable tbody tr');
+        let execRows = $('#execSelectTable tbody tr');
+        if(targetRows.length === 0 || execRows.length === 0) {
+            $('#preactice-tab').trigger('click');
+            alert('대상 또는 실행 항목이 존재하지 않습니다.');
+            return false;
+        }
+        
+        if(targetRows.length !== execRows.length) {
+            $('#preactice-tab').trigger('click');
+            alert('개별 적용의 경우 대상과 실행 테이블의 모든 항목이 동일해야 합니다.');
+            return false;
+        }
+
+        targetRows.each(function() {
+            let targetId = $(this).data('id').split('_').pop();
+            let correspondingExecRow = execRows.filter(function() {
+                return $(this).data('id').split('_').pop() === targetId;
+            });
+    
+            if(correspondingExecRow.length === 0) {
+                isMatchingRows = false;
+                return false;
+            }
+        });
+
+        if (!isMatchingRows) {
+            $('#preactice-tab').trigger('click');
+            alert('개별 적용의 경우 대상과 실행의 모든 항목이 동일해야합니다.');
+            return false;
+        }
+    }
+
+    if (($slack_webhook && !$slack_msg) || (!$slack_webhook && $slack_msg)) {     
+        alert('웹훅 URL과 메세지 둘 다 입력해주세요.');
+        $('#preactice-tab').trigger('click');
+        if(!$('#slackSendTable input[name="slack_webhook"]').val()){
+            $('#slackSendTable input[name="slack_webhook"]').focus();
+        } else if(!$('#slackSendTable input[name="slack_msg"]').val()){
+            $('#slackSendTable input[name="slack_msg"]').focus();
+        }
+        return false;
+    }
+
+    if(!$subject){
+        alert('제목을 추가해주세요.');
+        $('#detailTable input[name=subject]').focus();
+        return false;
+    }
+
+    return true;
+}
+
+function onlyNumberLeadingDashAndDot(inputElement) {
+    inputElement.value = inputElement.value.replace(/[^0-9.-]/g, '');
+}
+//실행 로우 DOM
+let executionDom = `
+<tr>
+    <td><input type="text" class="form-control" name="exec_order" placeholder="순서" oninput="onlyNumber(this);" maxlength="2"></td>
+    <td colspan="4"><div class="form-data-box"><ul><li></li><li></li><li></li></ul></div></td>
+    <td colspan="2">
+        <div class="form-flex mb5">
+            <select name="exec_condition_type" class="form-select">
+                <option value="">실행항목</option>
+                <option value="status">상태</option>
+                <option value="budget">예산</option>
+            </select>
+        </div>
+        <select name="exec_condition_type_budget" class="form-select">
+            <option value="">단위</option>
+            <option value="won">원</option>
+            <option value="percent">%</option>
+        </select>
+        
+    </td>
+    <td>
+    <select name="exec_condition_value_status" class="form-select">
+        <option value="">상태값</option>
+        <option value="ON">ON</option>
+        <option value="OFF">OFF</option>
+    </select>
+    <input type="text" name="exec_condition_value" class="form-control" placeholder="예산">
+    </td>
+    <td><button class="exec_condition_except_btn"><i class="fa fa-times"></i></button></td>
+</tr>`;
+//대상 로우 DOM
+let targetDom = `
+<tr>
+    <td colspan="4"><div class="form-data-box"><ul><li></li><li></li><li></li></ul></div></td>
+    <td></td>
+    <td><button class="set_target_except_btn"><i class="fa fa-times"></i></button></td>
+</tr>`;
+//모달 수정 세팅
+function setModalData(data){
+    $('#createAutomationBtn').hide();
+    $('#updateAutomationBtn').show();
+    $('#automationModal input[name=seq]').val(data.aa_seq);
+    
+    let schedule = {};
+    $.each(data.aas_schedule_value, function(index, value){
+        if(index > 0){
+            schedule[index] = $.map(value, function(num){
+                return parseFloat(num, 10);
+            });
+        }
+    });
+    selectedCell = [];
+    selectedCell = schedule;
+    $('#scheduleTable').scheduler('val', schedule);
+    if(data.aas_exec_once == '1'){
+        $('input[name=exec_once]').prop('checked', true);
+    }else{
+        $('input[name=exec_once]').prop('checked', false);
+    }
+    if(data.targets){ //대상 탭 table tbody
+        data.targets.forEach(function(target, index) {
+            let targetIndex = index+1;
+            //대상 table data 입력
+            let $targetData = $(targetDom).clone();
+            $targetData.attr('data-id', `${target.media}_${target.type}_${target.id}`).attr('id', `target-${targetIndex}`)
+                .find('td:eq(0) ul').find('li:eq(0)').text(target.media)
+                .next('li').text(target.type)
+                .next('li').text(target.name);
+            $targetData.find('td:eq(1)').text(target.status);
+            //자동화 목록 대상 텍스트 입력되는 부분
+            let newTargetText = '<p id="text-target-'+targetIndex+'">* '+target.type+' - '+target.media+'<br>'+target.name+'</p>';
+            $('#targetSelectTable tbody tr.nodata').remove();
+            $('#targetSelectTable tbody').append($targetData);
+            $('#target-tab').append(newTargetText);
+        });
+    }
+
+    //조건
+    if (data.conditions) {
+        data.conditions.forEach(function(condition, index) {
+            if(index === 0) {
+                if(condition.operation == 'and'){
+                    $('input[type="radio"][value="and"]').prop('checked', true);
+                }else{
+                    $('input[type="radio"][value="or"]').prop('checked', true);
+                }
+                $('#condition-1 .conditionOrder').val(condition.order);
+                $('#condition-1 .conditionOrder').val(condition.order);
+                $('#condition-1 .conditionType').val(condition.type);
+                if(condition.type == 'status'){
+                    $('#condition-1 .conditionTypeValue').hide();
+                    $('#condition-1 .conditionTypeValueStatus').val(condition.type_value).show();
+                    var conditionTypeValueText = $('#condition-1 .conditionTypeValueStatus option:selected').text();
+                }else{
+                    $('#condition-1 .conditionTypeValueStatus').hide();
+                    $('#condition-1 .conditionTypeValue').val(condition.type_value).show();
+                    var conditionTypeValueText = $('#condition-1 .conditionTypeValue').val();
+                }
+                
+                $('#condition-1 .conditionTypeValue').val(condition.type_value);
+                var conditionTypeValueText = $('#condition-1 .conditionTypeValue').val();
+
+                $('#condition-1 .conditionCompare').val(condition.compare);
+                $("#text-condition-1 .typeText").html($('#condition-1 .conditionType option:selected').text());
+                $("#text-condition-1 .typeValueText").html(conditionTypeValueText);
+                $("#text-condition-1 .compareText").html($('#condition-1 .conditionCompare option:selected').text());
+            } else { // 그 외의 항목일 경우
+                var uniqueId = 'condition-' + (index + 1);
+                addConditionRow(uniqueId);
+                //$(`#${uniqueId} .conditionOrder`).val(condition.order);
+                $(`#${uniqueId} .conditionType`).val(condition.type);
+                if(condition.type == 'status'){
+                    $(`#${uniqueId} .conditionTypeValue`).hide();
+                    $(`#${uniqueId} .conditionTypeValueStatus`).val(condition.type_value).show();
+                    var conditionTypeValueText = $("#"+uniqueId+" .conditionTypeValueStatus option:selected").text();
+                }else{
+                    $(`#${uniqueId} .conditionTypeValueStatus`).hide();
+                    $(`#${uniqueId} .conditionTypeValue`).val(condition.type_value).show();
+                    var conditionTypeValueText = $("#"+uniqueId+" .conditionTypeValue").val();
+                }
+                $(`#${uniqueId} .conditionTypeValue`).val(condition.type_value);
+                var conditionTypeValueText = $("#"+uniqueId+" .conditionTypeValue").val();
+
+                $(`#${uniqueId} .conditionCompare`).val(condition.compare);
+                $("#text-"+uniqueId+" .typeText").html($("#"+uniqueId+" .conditionType option:selected").text());
+                $("#text-"+uniqueId+" .typeValueText").html(conditionTypeValueText);
+                $("#text-"+uniqueId+" .compareText").html($("#"+uniqueId+" .conditionCompare option:selected").text());
+            }
+        });
+    }
+    
+    //실행
+    if (data.executions && Array.isArray(data.executions)) {
+        data.executions.forEach(function(execution, index) {
+            var execIndex = index+1;
+            //실행 table data 입력
+            var $executionData = $(executionDom).clone();
+            $executionData
+                .attr('data-id', `${execution.media}_${execution.type}_${execution.id}`).attr('id', `exec-${execIndex}`)
+                .find('td:eq(0) input[name="exec_order"]').val(execution.order)
+            $executionData
+                .find('td:eq(1)').find('ul').find('li:eq(0)').text(execution.type)
+                .next('li').text(execution.name)
+                .next('li').text(execution.media);
+            // var $executionData = $(executionData); // jQuery 객체로 변환
+            if(execution.exec_type == 'status'){
+                $executionData.find('input[name="exec_condition_value"]').hide();
+                $executionData.find('select[name="exec_condition_type_budget"]').hide();
+                $executionData.find('select[name="exec_condition_type"]').val(execution.exec_type);
+                $executionData.find('select[name="exec_condition_value_status"]').val(execution.exec_value).show();
+            }else{
+                $executionData.find('select[name="exec_condition_value_status"]').hide();
+                $executionData.find('select[name="exec_condition_type"]').val(execution.exec_type);
+                $executionData.find('input[name="exec_condition_value"]').val(execution.exec_value).show();
+                $executionData.find('select[name="exec_condition_type_budget"]').val(execution.exec_budget_type).show();
+            }
+            $('#execSelectTable tbody tr.nodata').remove();
+            $('#execSelectTable tbody').append($executionData);
+            var newExecText = '<p id="text-exec-'+execIndex+'">* '+execution.type+' - '+execution.media+'<br>'+execution.name+'</p>';
+            $('#preactice-tab').append(newExecText);
+        });
+    }
+
+    if(data.aa_slack_webhook){
+        $('#slackSendTable input[name=slack_webhook]').val(data.aa_slack_webhook); 
+    }
+
+    if(data.aa_slack_msg){
+        $('#slackSendTable input[name=slack_msg]').val(data.aa_slack_msg); 
+    }
+
+    $('#detailTable input[name=subject]').val(data.aa_subject);
+    if(data.aa_description){
+        $('#detailTable textarea[name=description]').val(data.aa_description); 
+    }
+
+    $('#detailText #subjectText').text(data.aa_subject);
+    $('#detailText #descriptionText').text(data.aa_description);
+
+    conditionStatusHide();
+}
+
+//대상/실행 table 데이터가 없을 경우
+function addNoDataMessage(tableId, colspanWid) {
+    let notargetData = `<tr class="nodata"><td colspan="${colspanWid}" class="text-center pd10">데이터가 없습니다.</td></tr>`;
+    $(`#${tableId} tbody`).append(notargetData);
+}
+const notargetJs = () => addNoDataMessage('targetSelectTable', 6); //대상table
+const noexecJs = () => addNoDataMessage('execSelectTable', 9); //실행table
+
+//모달 초기화
+function reset(){
+    selectedCell = [];
+    $('.scheduler-reset').trigger('click');
+    $('input[name=exec_once]').prop('checked', false);
+    $('#automationModal input[name=seq]').val('');
+    $('#conditionTable tbody tr:not(#condition-1)').remove()
+    $('#targetCheckedTable tbody tr, #targetSelectTable tbody tr, #execSelectTable tbody tr').remove();
+    $('#condition-1 input[name=type_value]').show();
+    $('#condition-1 select[name=type_value_status]').hide();
+    $('#myTab li').each(function(index){
+        let $pTags = $(this).find('p');
+        if(index === 1 || index === 3){
+            $pTags.remove();
+        }else if (index === 2 || index === 4) {
+            $pTags.first().find('span').text('');
+        }else{
+            $pTags.first().text('');
+        }
+        $pTags.not(':first').remove();
+    })
+
+    $('#automationModal').find('select').each(function() {
+        $(this).prop('selectedIndex', 0);
+    });
+    $('#automationModal').find('input[type=text], input[type=hidden], textarea').each(function() {
+        $(this).val('');
+    }); 
+    
+    $('input[name=operation]').prop('checked', false);
+    $('#searchAll').prop('checked', false);
+    $('#showTargetAdv').prop('disabled', false);
+    
+    $('#condition-tab p').show();
+    
+    if ($.fn.DataTable.isDataTable('#targetTable')) {
+        targetTable = $('#targetTable').DataTable();
+        targetTable.destroy();
+    }
+    if ($.fn.DataTable.isDataTable('#execTable')) {
+        execTable = $('#execTable').DataTable();
+        execTable.destroy();
+    }
+
+    $('#targetTable tbody tr, #execTable tbody tr').remove();
+    $('#schedule-tab').trigger('click');
+}
+
+function setProcData(){
+    let $onceExecution = $('input[name=exec_once]').prop('checked');
+    let $target_create_type = $('input[name=target_create_type]:checked').val();
+    let $operation = $('input[name=operation]:checked').val();
+
+    let $targets = [];
+    let $conditions = [];
+    let $executions = [];
+
+    $('#targetSelectTable tbody tr').each(function(){
+        let $row = $(this);
+        let info = $row.data('id').split('_');
+        let media = info[0];
+        let type = info[1];
+        let id = info[2];
+
+        $targets.push({
+            media: media,
+            type: type,
+            id: id,
+        });
+    });
+
+    $('#conditionTable tbody tr[id^="condition-"]').each(function(){
+        let $row = $(this);
+        let type = $row.find('select[name=type]').val();
+        let type_value = '';
+        if(type == 'status'){
+            type_value = $row.find('select[name=type_value_status]').val();
+        }else{
+            type_value = $row.find('input[name=type_value]').val();
+        }
+        let compare = $row.find('select[name=compare]').val();
+        
+        if(type){
+            $conditions.push({
+                type: type,
+                type_value: type_value,
+                compare: compare,
+                operation: $operation
+            });
+        }
+    });
+
+    $('#execSelectTable tbody tr').each(function(){
+        let $row = $(this);
+        let info = $row.data('id').split('_');
+        let order = $row.find('input[name=exec_order]').val();
+        let media = info[0];
+        let type = info[1];
+        let id = info[2];
+        let exec_type = $row.find('select[name=exec_condition_type]').val();
+        let exec_value = '';
+        if(exec_type == 'status'){
+            exec_value = $row.find('select[name=exec_condition_value_status]').val();
+        }else if(exec_type == 'budget'){
+            exec_value = $row.find('input[name=exec_condition_value]').val();
+        }
+        let exec_budget_type = $row.find('select[name=exec_condition_type_budget]').val();
+
+        $executions.push({
+            order: order,
+            media: media,
+            type: type,
+            id: id,
+            exec_type: exec_type,
+            exec_value: exec_value,
+            exec_budget_type: exec_budget_type
+        });
+    });
+
+    let $subject = $('#detailTable input[name=subject]').val();
+    let $description = $('#detailTable textarea[name=description]').val();
+    let $slack_webhook = $('#slackSendTable input[name=slack_webhook]').val();
+    let $slack_msg = $('#slackSendTable input[name=slack_msg]').val();
+
+    let $data = {
+        'schedule': {
+            'exec_once': $onceExecution,
+            'schedule_value': selectedCell
+        },
+        'execution': $executions,
+        'detail': {
+            'subject': $subject,
+            'description': $description,
+            'slack_webhook': $slack_webhook,
+            'slack_msg': $slack_msg,
+        }
+    };
+
+    if ($('#targetSelectTable tbody tr').length > 0) {
+        $data['target_create_type'] = $target_create_type;
+        $data['target'] = $targets;
+        $data['condition'] = $conditions;
+    }
+
+    return $data;
+}
+
+function conditionStatusHide(){
+    let targetCount = $('#targetSelectTable tbody tr').length;
+    if (targetCount > 1) {
+        $('#conditionTable select option[value=status]').hide();
+    }else{
+        $('#conditionTable select option[value=status]').show();
+    }
+}
+
+function setTargetExec(data)
+{
+    data.forEach(function(target, index) {
+        let targetIndex = index+1;
+        //통합광고관리 대상 tab
+        let $targetData = $(targetDom).clone();
+        $targetData.attr('data-id', `${target.media}_${target.type}_${target.id}`).attr('id', `target-${targetIndex}`)
+            .find('td:eq(0) ul').find('li:eq(0)').text(target.media)
+            .next('li').text(target.type)
+            .next('li').text(target.name);
+        $targetData.find('td:eq(1)').text(target.status);
+        //통합 광고 관리 대상 텍스트 입력되는 부분
+        let newTargetText = '<p id="text-target-'+targetIndex+'">* '+target.type+' - '+target.media+'<br>'+target.name+'</p>';
+        $('#targetSelectTable tbody').append($targetData);
+        $('#target-tab').append(newTargetText);
+    });
+}
+
+function getTargetAdv(data){
+    $.ajax({
+        type: "GET",
+        url: "/advertisements/get-adv",
+        data: data,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(data){  
+            setTargetExec(data);
+        },
+        error: function(error, status, msg){
+            alert("상태코드 " + status + "에러메시지" + msg );
+        }
+    });
+}
+
+// 미디어 버튼 클릭 이벤트 수정
+$('body').on('click', '.media_btn', function() {
+    $(this).toggleClass('active');
+});
+
+
+//모달 보기
+$('#automationModal').on('show.bs.modal', function(e) {
+    $('#execSearchWrap').show();
+    var $btn = $(e.relatedTarget);
+    if ($btn.hasClass('updateBtn')) {
+        $('#automationModal #targetCreateType').hide();
+        var id = $btn.closest('tr').data('id');
+        $.ajax({
+            type: "GET",
+            url: "/automation/get-automation",
+            data: {'id':id},
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function(data){  
+                setModalData(data);
+            },
+            error: function(error, status, msg){
+                alert("상태코드 " + status + "에러메시지" + msg );
+            }
+        });
+    }else{      
+        if ($btn.hasClass('advAutomationCreateBtn')) {
+            let selected = [];
+            let clickBtn = $($btn).closest('tr').data('id');
+            selected.push(clickBtn);
+            let data = {
+                'check': selected,
+                'type': $('.tab-link.active').val(),
+            };
+            getTargetAdv(data);
+        }
+
+        if ($btn.hasClass('checkAdvAutomationCreateBtn')) {
+            if($('.dataTable tbody tr.selected').length == 0){
+                alert('자동화를 등록할 대상을 선택해주세요.');
+                return false;
+            }
+            let selected = $('.dataTable tbody tr.selected').map(function(){return $(this).data('id');}).get();
+            let data = {
+                'check': selected,
+                'type': $('.tab-link.active').val(),
+            };
+            getTargetAdv(data);
+        }
+
+        conditionStatusHide();
+        $('#automationModal #targetCreateType').show();
+        $('#automationModal input[type="radio"][value="target_sum"]').prop('checked', true);
+        $('#automationModal input[type="radio"][value="and"]').prop('checked', true);
+        $('#createAutomationBtn').show();
+        $('#updateAutomationBtn').hide();
+    }
+})//모달 닫기
+.on('hidden.bs.modal', function(e) { 
+    reset();
+});
+
+$.fn.scheduler.locales['ko'] = {
+    AM:'오전',
+    PM:'오후',
+    TIME_TITLE:'시간',
+    WEEK_TITLE:'요일',
+    WEEK_DAYS: ['월요일','화요일','수요일','목요일','금요일','토요일','일요일'],
+    DRAG_TIP: '시간을 드래그해주세요.',
+    RESET: '초기화'
+};
+
+$('#scheduleTable').scheduler({
+    accuracy: 2,
+    locale: 'ko',
+    onSelect: function (d) {
+        selectedCell = d;
+    }
+});
+
+$('form[name="search-target-form"]').bind('submit', function() {
+    let data = {
+        'tab': $('#targetTab li.active').data('tab'),
+        'stx': $('#showTargetAdv').val(),
+    }
+    getTargetAdvs(data);
+    
+    return false;
+});
+
+$('form[name="search-exec-form"]').bind('submit', function() {
+    let searchAll = $('#searchAll').is(':checked');
+    let targets = $('#targetSelectTable tbody tr').length;
+    let adv = [];
+
+    if (!searchAll && !targets) {
+        alert('대상이 없을 경우 전체검색을 체크해주세요.');
+        $('#searchAll').focus();
+        return false;
+    }
+
+    $('#targetSelectTable tbody tr').each(function() {
+        let dataId = $(this).data('id');
+        adv.push(dataId);
+    });
+
+    let data = {
+        'tab': $('#execTab li.active').data('tab'),
+        'stx': $('#showExecAdv').val(),
+        'adv': searchAll ? null : adv,
+    }
+
+    getExecAdvs(data);
+    return false;
+});
+
+$('body').on('click', '.target-btn', function(e){
+    e.stopPropagation();
+    let $row = $(this).closest('tr');
+    let $td = $row.children('td');
+    let media = $td.eq(0).text();
+    let type = $td.eq(1).text();
+    let mediaNumber = $td.eq(2).text();
+    let mediaTitle = $td.eq(3).text();
+    let mediaStatus = $td.eq(4).text();
+    let newRowIdNumber = $('#targetSelectTable tbody tr').length + 1;
+    if ($('#targetSelectTable tbody td:contains("' + mediaTitle + '")').length > 0) {
+        alert("중복된 행이 존재합니다.");
+        return;
+    }
+    
+    var $targetData = $(targetDom).clone();
+    $targetData
+        .attr('data-id', `${media}_${type}_${mediaNumber}`).attr('id', `target-${newRowIdNumber}`)
+    $targetData
+        .find('td:eq(0) ul li:eq(0)').text(media)
+        .next('li').text(type)
+        .next('li').text(mediaTitle);
+    $targetData.find('td:eq(1)').text(mediaStatus);
+    $('#targetSelectTable tbody tr.nodata').remove();
+    $targetData.appendTo('#targetSelectTable');
+    //자동화 목록 대상 텍스트 입력되는 부분
+    let newTargetText = '<p id="text-target-'+newRowIdNumber+'">* '+type+' - '+media+'<br>'+mediaTitle+'</p>';
+    $('#target-tab').append(newTargetText);
+
+    conditionStatusHide();
+});
+
+
+
+
+$('body').on('click', '.callTargetBtn', function(){
+    let isTargetPresent = false;
+    $('#targetSelectTable tbody tr').each(function() {
+        let media = $(this).find('td:eq(0) ul li:eq(1)').text();
+        if (media === '캠페인' || media === '광고그룹' || media === '광고') {
+            isTargetPresent = true;
+            return false;
+        }
+    });
+    
+    if (!isTargetPresent) {
+        alert('불러올 대상이 존재하지 않습니다.');
+        return false;
+    }
+
+    $('#targetSelectTable tbody tr').each(function() {
+        let trId = $(this).data('id');
+        let existingIds = $('#execSelectTable tbody tr').map(function() {
+            return $(this).data('id');
+        }).get();
+    
+        if (existingIds.includes(trId)) {
+            alert('중복된 행이 존재합니다.');
+            return false;
+        }
+        let data = trId.split('_');
+        let media = data[0];
+        let type = data[1];
+        let mediaNumber = data[2];
+        let mediaTitle = $(this).find('td:eq(0) ul li:eq(2)').text();
+        if (type == '캠페인' || type == '광고그룹' || type == '광고') {
+            $('#execSelectTable tbody tr.nodata').remove();
+            let newRowIdNumber = $('#execSelectTable tbody tr').length + 1;
+            var $executionData = $(executionDom).clone();
+            $executionData
+                .attr('data-id', `${media}_${type}_${mediaNumber}`).attr('id', `exec-${newRowIdNumber}`)
+                .find('td:eq(0) input[name="exec_order"]').val(newRowIdNumber)
+            $executionData
+                .find('td:eq(1)').find('ul').find('li:eq(0)').text(type)
+                .next('li').text(mediaTitle)
+                .next('li').text(media);
+            $executionData.find('input[name="exec_condition_value"]').hide();
+            $executionData.find('select[name="exec_condition_type_budget"]').hide();
+            if (type === '광고' || (media == '구글' && type == '광고그룹')) {
+                $executionData.find('select[name="exec_condition_type"] option[value="budget"]').hide();
+                $executionData.find('select[name="exec_condition_value_status"]').show();
+            }else{
+                $executionData.find('select[name="exec_condition_value_status"]').hide();
+            }
+            $executionData.appendTo('#execSelectTable tbody');
+            let newExecText = '<p id="text-exec-'+newRowIdNumber+'">* '+type+' - '+media+'<br>'+mediaTitle+'';
+            $('#preactice-tab').append(newExecText);
+        }
+    });
+
+});
+
+//실행 자동화 table 20240711
+$('body').on('click', '#execTable tbody tr', function(){
+    if ($(this).hasClass('selected')) {
+        $(this).removeClass('selected');
+    }else {
+        $(this).addClass('selected');
+        let trId = $(this).data('id');
+        $('#execSelectTable tbody tr.nodata').remove();
+        let newRowIdNumber = $('#execSelectTable tbody tr').length + 1;
+        let existingIds = $('#execSelectTable tbody tr').map(function() {
+            return $(this).data('id');
+        }).get();
+    
+        if (existingIds.includes(trId)) {
+            alert('중복된 행이 존재합니다.');
+            return false;
+        }
+        let media = $(this).find('td:eq(0)').text();
+        let type = $(this).find('td:eq(1)').text();
+        let mediaNumber = $(this).find('td:eq(2)').text();
+        let mediaTitle = $(this).find('td:eq(3)').text();
+        var $executionData = $(executionDom).clone();
+        $executionData
+            .attr('data-id', `${media}_${type}_${mediaNumber}`).attr('id', `exec-${newRowIdNumber}`)
+            .find('td:eq(0) input[name="exec_order"]').val(newRowIdNumber)
+        $executionData
+            .find('td:eq(1)').find('ul').find('li:eq(0)').text(type)
+            .next('li').text(mediaTitle)
+            .next('li').text(media);
+        $executionData.find('input[name="exec_condition_value"]').hide();
+        $executionData.find('select[name="exec_condition_type_budget"]').hide();
+        if (type === '광고' || (media == '구글' && type == '광고그룹')) {
+            $executionData.find('select[name="exec_condition_type"] option[value="budget"]').hide();
+            $executionData.find('select[name="exec_condition_value_status"]').show();
+        }else{
+            $executionData.find('select[name="exec_condition_value_status"]').hide();
+        }
+        $executionData.appendTo('#execSelectTable tbody');
+
+        let selectedMediaTd = $(this).children('td').eq(0).text();
+        let selectedTypeTd = $(this).children('td').eq(1).text();
+        let selectedNameTd = $(this).children('td').eq(3).text();
+        let newExecText = '<p id="text-exec-'+newRowIdNumber+'">* '+selectedTypeTd+' - '+selectedMediaTd+'<br>'+selectedNameTd+'';
+        $('#preactice-tab').append(newExecText);
+    }
+});
+
+$('body').on('click', '#targetTab li', function(){
+    $('#targetTab li').removeClass('active');
+    $(this).addClass('active');
+    let $selectRow = $('#targetCheckedTable tbody tr').data('id');
+    let $selectRowCount = $('#targetCheckedTable tbody tr').length;
+
+    if($selectRowCount > 0){
+        let adv = [];
+        adv.push($selectRow);
+        let data = {
+            'tab': $('#targetTab li.active').data('tab'),
+            'adv': adv
+        }
+
+        getTargetAdvs(data);
+    }
+});
+
+//합산적용, 개별적용
+$('body').on('change', '#targetCreateType input[name=target_create_type]', function() {
+    //상태 선택
+    let type = $(this).val();
+    if(type == 'target_seperate'){
+        $('#execSearchWrap').hide();
+    }else{
+        $('#execSearchWrap').show();
+    }
+});
+
+$('body').on('click', '#execTab li', function(){
+    $('#execTab li').removeClass('active');
+    $(this).addClass('active');
+});
+
+$('body').on('click', '#conditionTable .btn-add', function(){
+    let currentRowCount = $('#conditionTable tbody tr').length;
+    let uniqueId = 'condition-' + (currentRowCount + 1);
+    addConditionRow(uniqueId);
+});
+
+$('body').on('change', '#conditionTable select[name=type]', function() {
+    //상태 선택
+    let type = $(this).val();
+    let rowId = $(this).closest('tr').attr('id');
+    if(type == 'status'){
+        $('#text-'+rowId+" .typeValueText").text('');
+        $(this).siblings('input[name=type_value]').val('').hide();
+        $(this).closest('tr').find('select[name=compare]').children('option:not([value="equal"], [value="not_equal"])').hide();
+        $(this).siblings('select[name=type_value_status]').show();
+    }else{
+        if($('#text-'+rowId+" .typeValueText").text() == 'ON' || $('#text-'+rowId+" .typeValueText").text() == 'OFF'){
+            $('#text-'+rowId+" .typeValueText").text('');
+        }
+        $(this).siblings('select[name=type_value_status]').val('').hide();
+        $(this).closest('tr').find('select[name=compare]').children('option').show();   
+        $(this).siblings('input[name=type_value]').show();   
+    }
+});
+
+$('body').on('change', '#conditionTable input, #conditionTable select', function() {
+    let $this = $(this);
+    conditionText($this);
+});
+
+$('body').on('change', '#execSelectTable tbody tr select[name=exec_condition_type]', function() {
+    let value = $(this).val();
+    if(value == 'status'){
+        $(this).closest('tr').find('input[name=exec_condition_value]').val('').hide();
+        $(this).closest('tr').find('select[name=exec_condition_type_budget]').val('').hide();
+        $(this).closest('tr').find('select[name=exec_condition_value_status]').show();
+    }else if(value == 'budget'){
+        $(this).closest('tr').find('select[name=exec_condition_value_status]').val('').hide();  
+        $(this).closest('tr').find('input[name=exec_condition_value]').show();   
+        $(this).closest('tr').find('select[name=exec_condition_type_budget]').show();
+    }
+});
+
+$('body').on('change', '#execSelectTable tfoot select[name=all_exec_condition_type]', function(){
+    let value = $(this).val();
+    if(value == 'status'){
+        $('#execSelectTable tbody select[name=exec_condition_type]').val(value);
+        $('#execSelectTable tbody select[name=exec_condition_type]').trigger('change');
+        $(this).closest('tr').find('input[name=all_exec_condition_value]').val('').hide();
+        $(this).closest('tr').find('select[name=all_exec_condition_type_budget]').val('').hide();
+        $(this).closest('tr').find('select[name=all_exec_condition_value_status]').show();
+    }else if(value == 'budget'){
+        $('#execSelectTable tbody tr').each(function() {
+            let media = $(this).find('td').eq(1).text();
+            let type = $(this).find('td').eq(2).text();
+            if(type == '광고' || (media == '구글' && type == '광고그룹')) {
+                return;
+            }else{
+                $(this).find('select[name=exec_condition_type]').val(value).trigger('change');
+            }
+        });
+    
+        $(this).closest('tr').find('select[name=all_exec_condition_value_status]').val('').hide();  
+        $(this).closest('tr').find('input[name=all_exec_condition_value]').show();   
+        $(this).closest('tr').find('select[name=all_exec_condition_type_budget]').show();
+    }
+});
+
+$('body').on('change', '#execSelectTable tfoot select[name=all_exec_condition_value_status]', function(){
+    let value = $(this).val();
+    $('#execSelectTable tbody tr').each(function() {
+        let $select = $(this).find('select[name=exec_condition_type]');
+        let selectedOption = $select.find('option:selected').val();
+
+        if(selectedOption === 'status') {
+            $(this).find('select[name=exec_condition_value_status]').val(value);
+        }
+    });
+});
+
+$('body').on('input', '#execSelectTable tfoot input[name=all_exec_condition_value]', function(){
+    let value = $(this).val();
+    $('#execSelectTable tbody tr').each(function() {
+        let $select = $(this).find('select[name=exec_condition_type]');
+        let selectedOption = $select.find('option:selected').val();
+
+        if(selectedOption === 'budget') {
+            $(this).find('input[name=exec_condition_value]').val(value);
+        }
+    });
+});
+
+$('body').on('change', '#execSelectTable tfoot select[name=all_exec_condition_type_budget]', function(){
+    let value = $(this).val();
+    $('#execSelectTable tbody tr').each(function() {
+        let $select = $(this).find('select[name=exec_condition_type]');
+        let selectedOption = $select.find('option:selected').val();
+
+        if(selectedOption === 'budget') {
+            $(this).find('select[name=exec_condition_type_budget]').val(value);
+        }
+    });
+});
+
+
+$('body').on('click', '.set_target_except_btn', function() {
+    let rowId = $(this).closest('tr').attr('id');
+    $(this).closest('tr').remove();
+    $('#target-tab #text-'+rowId).remove();
+    if($('#targetSelectTable tbody tr').length === 0) {
+        notargetJs();
+    }
+
+    conditionStatusHide();
+});
+
+$('body').on('click', '.exec_condition_except_btn', function() {
+    $(this).closest('tr').remove();
+    let rowId = $(this).closest('tr').attr('id');
+    $('#preactice-tab #text-'+rowId).remove();
+    if($('#execSelectTable tbody tr').length === 0) {
+        noexecJs();
+    }
+});
+
+$('body').on('click', '.deleteBtn', function() {
+    $(this).closest('tr').remove();
+    let rowId = $(this).closest('tr').attr('id');
+    $('#condition-tab #text-'+rowId).remove();
+});
+
+$('body').on('focusout', '#detailTable input[name=subject]', function() {
+    let detailTextSubject = $(this).val();
+    $('#detailText #subjectText').text(detailTextSubject);
+});
+
+$('body').on('focusout', '#detailTable textarea[name=description]', function() {
+    let detailTextDescription = $(this).val();
+    $('#detailText #descriptionText').text(detailTextDescription);
+});
+
+$('body').on('click', '#createAutomationBtn', function() {
+    if(validationData()){
+        let procData = setProcData();
+        $.ajax({
+            type: "POST",
+            url: "/automation/create",
+            data: procData,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function(data){  
+                if(data == true){
+                    dataTable.ajax.reload();
+                    $('#automationModal').modal('hide');
+                }
+            },
+            error: function(error, status, msg){
+                var errorMessages = error.responseJSON.messages.msg;
+                var firstErrorMessage = Object.values(errorMessages)[0];
+                alert(firstErrorMessage);
+            }
+        });
+    };
+});
+
+$('body').on('click', '#updateAutomationBtn', function() {
+    if(validationData()){
+        let procData = setProcData();
+        procData.seq = $('input[name=seq]').val();
+        $.ajax({
+            type: "PUT",
+            url: "/automation/update",
+            data: procData,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function(data){  
+                if(data == true){
+                    dataTable.ajax.reload();
+                    $('#automationModal').modal('hide');
+                }
+            },
+            error: function(error, status, msg){
+                var errorMessages = error.responseJSON.messages.msg;
+                var firstErrorMessage = Object.values(errorMessages)[0];
+                alert(firstErrorMessage);
+            }
+        });
+    };
+});
+//등록 부분 끝

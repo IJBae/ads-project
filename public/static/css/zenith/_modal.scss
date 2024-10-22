@@ -1,0 +1,427 @@
+.modal{
+    --bs-modal-header-padding:30px 30px 15px;
+    --bs-modal-padding:15px 30px 30px;
+    .modal-dialog{--bs-modal-width:620px;
+        &.max-520{--bs-modal-width:520px; word-break: keep-all; line-height: 1.6;
+            .modal-body p {color:rgb(var(--bs-gray-wenge));
+                b{color:rgb(var(--bs-red-origin)); font-weight: 900;}  
+                span{border-bottom: 2px solid rgb(var(--bs-gray-pastel)); color:rgb(var(--bs-black)); font-weight: 600; text-shadow: 0px 1px 10px rgb(var(--bs-gray-pastel));}
+            }
+        }
+    }
+    .modal-lg{--bs-modal-width:895px;}
+    &.fade{
+        .modal-dialog{transform:translate(50px,0);}
+    }
+    &.show{
+        .modal-dialog{transform:none;}
+    }
+    .modal-header{border-bottom:0;
+        .modal-title{
+            font-size:1.425rem; 
+            border-bottom:2px solid rgb(var(--bs-red-primary)); 
+            overflow:hidden; 
+            text-overflow:ellipsis;
+            &:not(.taxModalLabel) {//#disbursementModalLabel
+                animation:letterSpacing 0.7s linear alternate;
+                .bi-arrow-counterclockwise {
+                    &:active {
+                        &::before {
+                            transform: rotate(360deg);
+                            transition:all 0.5s;
+                        }
+                    }
+                }
+            }
+            .title{
+                &::before{content:"-"; padding:0 5px;}
+            }
+            .bi{font-size:22px;}
+        }
+    }
+    .modal-body{
+        .body-title{margin:0 0 15px; font-size:20px;}
+        textarea{width:100%; height:95px; padding:10px; border:1px solid rgb(var(--bs-silver)); border-radius:5px; background:rgb(var(--bs-white-spring));}
+        > .d-flex{
+            &:has(button){margin:0 0 15px;}//통합광고관리 - 데이터비교 팝업 버튼
+            .body-title{margin:0;}
+            form{min-width:300px;}
+        }
+        .btn-area {
+            display:flex;
+            justify-content:flex-end;
+            .btn-special{
+                width:115px; height:52px; font-weight:700; color:rgb(var(--bs-white)); border-radius:7px; background:rgb(var(--bs-blue));
+            }  
+        }
+        .accountStatMediabtn {
+            button {
+                width:120px;
+                height:35px;
+                font-size: 15px;
+                margin:0 5px 0 0;
+            }
+        }
+    }
+    .modal-footer{padding:0 30px 30px; border:0;
+
+    }
+    .sm-txt{
+        .modal-header{border-bottom:0;
+            .modal-title{font-size:18px; border-bottom:2px solid rgb(var(--bs-red-primary));
+                .bi{font-size:15px;}
+            }
+        }
+    }
+    .search-wrap{
+        margin:0 0 30px;
+        .search{
+            padding:35px 20px;
+        }
+        &.log-search-wrap{
+            .search {
+                display:flex;
+                justify-content:center;
+                .input {
+                    flex:0 0 auto;
+                }
+            }
+        }
+    }
+    //모달에서는 1400px 넓이 사용하지 않음.
+    .table-default{width:100%;min-width:auto;}
+    //통합광고관리 목표수량 설정 모달 리스트
+    .dbCountTable_wrapper {
+        .dt-scroll-headInner{width:100% !important;}
+        .table-modal{width:100% !important;}
+        table{
+            table-layout: auto;
+            th:nth-child(1){width: 5%;}
+            th:nth-child(2){width: 75%;}
+            th:nth-child(3){width: 20%;}
+        }
+    }
+}
+.sorting{
+    margin:0 0 20px;
+    button{
+        width:135px;
+        height:40px;
+        margin:0 8px 0 0;
+        font-size:20px;
+        text-align:center;
+        border:1px solid rgb(var(--bs-dark-metal));
+        border-radius:20px;
+        &.active{
+            color:rgb(var(--bs-white));
+            background:rgb(var(--bs-dark-metal));
+        }
+    }
+    .term{
+        color:rgb(var(--bs-gray));
+    }
+}
+.regi-form{
+    fieldset{
+        display:flex;
+        textarea {
+            width:60%;
+        }
+        .btn-regi{
+            width:90px;
+            margin:0 0 0 5px;
+            text-align:center;
+            border-radius:5px;
+            background:rgb(var(--bs-dark-metal));
+            color:rgb(var(--bs-white));
+        }
+    }
+}
+//메모확인
+.memo-list, .change-list{
+    font-size:13px;
+    max-height:60vh;
+    overflow-y:auto;
+    li{
+        position:relative;
+        padding:10px 0;
+        flex-flow:wrap row;
+        &::before{
+            content:"";
+            position:absolute;
+            top:17px;
+            left:-6px;
+            width:2px;
+            height:2px;
+            border-radius:100%;
+            background-color:rgb(var(--bs-red-primary));
+        }
+        &:not(:last-child){
+            border-bottom:2px dashed rgb(var(--bs-gray-pearl));
+        }
+        .info{
+            min-width:200px;
+            text-align:right;
+        }
+    }
+    .memo-item {
+        display:flex;
+        justify-content:space-between;
+        padding:10px 0;
+        &:not(:last-child){
+            border-bottom:2px dashed rgb(var(--bs-gray-pearl));
+        }
+    }
+    
+}
+.ad-status{margin:0 0 15px; padding:6px 0; text-align:center; background:rgb(var(--bs-white-spring));}
+.status-type{padding:0 0.7813vw; font-size:15px;
+    li{position:relative; padding:0 0 0 12px;
+        &:not(first-child){margin:10px 0 0;}
+        &:before{position:absolute; top:5px; left:0; width:4px; height:4px; content:''; border-radius:50%; background:rgb(var(--bs-red-primary));}
+        .info{font-size:13px;
+            span{margin:0 0 0 5px;}
+        }
+    }
+}
+.approval{display:flex; justify-content:flex-end; margin:0 0 10px;
+    li{width:100px; margin:0 0 0 -1px; font-size:13px; text-align:center; border:1px solid rgb(var(--bs-gray-300));}
+    span{display:block; padding:5px 0; border-bottom:1px solid rgb(var(--bs-gray-300)); background:rgb(var(--bs-white-spring));}
+    div{height:100px;}
+}
+.dtsr-confirmation{
+    > *:not(.dtsr-rename-modal) {padding:.5rem .5rem;}
+    .dtsr-confirmation-title-row{font-size:18px; border-bottom:2px solid rgb(var(--bs-red-primary)); overflow:hidden; text-overflow:ellipsis; display: inline-block; padding-bottom:1%;}
+    .dtsr-confirmation-text{border:1px solid var(--bs-border-color);
+        > * {padding:.5rem .5rem;}
+        .dtsr-confirmation-message{display:block !important; background-color:rgb(var(--bs-white-spring)); text-align:left !important;}
+        input.dtsr-input{margin:.5rem .5rem; width:96%;}
+    }
+    .dtsr-popover-close{width:auto; height:auto; font-size:1.7rem; background-color:unset; border:none;}
+    .dtsr-confirmation-button{background: rgb(var(--bs-blue)); color: rgb(var(--bs-white)); padding: 0.75rem 0.375rem; border-radius:0.375rem;}
+}
+
+
+//통합광고관리 - 자동화등록팝업 - 대상 - 합산적용/개별적용
+.automationModal .targetCreateType{
+    display: flex;
+    margin-bottom: 15px;
+}
+//통합광고관리 - 자동화등록팝업 - 대상 - 적용항목
+.targetSelectTable {
+    tbody {
+        tr {
+            td{
+                position: relative;
+                .set_target_except_btn{
+                    padding:0;
+                    i{
+                        font-size: 18px;
+                    }
+                }
+                &:last-of-type{
+                    padding:0 10px 0 10px;
+                }
+            }
+        }
+    }
+}
+//조건 탭 
+.conditionTable{
+    tr{
+        position: relative;
+        input[type=text], select{
+            height:40px;
+        }
+        .deleteBtn{
+            i{
+                font-size: 18px;
+            }
+        }
+    }
+}
+//실행 탭 - 적용항목
+.execSelectTable{
+    thead tr th{
+        position: relative;
+        .callTargetBtnBox{
+            position: absolute;
+            right:10px;
+            top:50%;
+            transform:translateY(-50%);
+            padding:0;
+            .callTargetBtn{
+                padding:7px 10px;
+                background-color:rgb(var(--bs-red-primary));
+                border-radius: 5px;
+                font-size: 12px;
+                color:rgb(var(--bs-white));
+                font-weight: bold;
+            }
+        }
+    }
+    tr td{
+        position: relative;
+        font-size: 13px;
+        input, select{
+            font-size: 0.8rem;
+            padding: 0.275rem 0.25rem 0.375rem 0.35rem;
+            height:34px;
+        }
+        input{
+            text-align:center;
+        }
+        .exec_condition_except_btn{
+            padding:0;
+            i{font-size: 18px;}
+        }
+        
+    }
+
+    tfoot{
+        border-top: 1px solid rgb(var(--bs-dark-dune));background-color:rgb(var(--bs-white-spring));
+        tr td{
+            border-left: none;
+            border-bottom: none;
+            background-color:rgb(var(--bs-white-snow));
+            font-weight: bold;
+        }
+    }
+}
+// 대상 적용 항목
+.form-data-box {
+    ul{
+        li{
+            position:relative;
+            margin-bottom: 10px;
+            padding-left:10px;
+            text-align:left;
+            &::after {
+                content:"·";
+                position:absolute;
+                left:0;
+                top:0;
+            }
+            &:last-of-type{
+                margin-bottom:0;
+            }
+        }
+    }
+}
+
+
+/*회원관리 > 광고주 관리 팝업*/
+.company-contaniner{
+    .modal{
+        form[name='adv-show-form'],form[name='adaccount-form'], form[name='belong-user-form']{
+            max-width: var(--bs-modal-width);
+            overflow-x:scroll;
+        }
+        .dataTables_wrapper{overflow:scroll;}
+        form[name='adv-show-form'],form[name='belong-user-form']{
+            // .form-control{text-align: center;}
+            .form-control{
+                width:100%;
+                // height:100%;
+                padding:14px 15px;
+                text-align: center;
+                line-height:1.4;
+                border:1px solid rgb(var(--bs-gray-border));
+                border-radius:5px;
+                background:rgb(var(--bs-white));
+                &.active{
+                    color:rgb(var(--bs-red-primary)); 
+                    border-color:rgb(var(--bs-red-primary));
+                }
+                &.alert{
+                    margin:0;
+                    &::before{
+                        position:absolute;
+                        top:0;
+                        left:0;
+                        width:100%;
+                        height:3px;
+                        content:'';
+                        background:rgb(var(--bs-red-primary));
+                    }
+                }
+            }
+            span{text-align: center; display: block; font-size:1rem;}
+        }
+        form[name='adv-show-form'].adv-show-form {
+            overflow-x:hidden;
+            .table-data, 
+            .table-modal{
+                min-width:auto;
+            }
+        }
+    }
+    
+}
+.modal[aria-labelledby="totalModalLabel"] {
+    .modal-body {
+        .d-flex {
+            form{
+                label{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    .bi-calendar2-week {
+                        padding:0 5%;
+                    }
+                }
+            }
+            
+        }
+    }
+    &.dayOffModal{//시간차관리
+        .table-modal{
+            min-width:auto;
+        }
+    }
+}
+
+@include x-large{//1400px
+
+}
+@include large{//1200px
+
+}
+@include medium{//1024px
+    .modal{
+        --bs-modal-header-padding:20px 20px 10px;
+        --bs-modal-padding:20px;
+        .modal-body{
+            .table-responsive{overflow-x:auto;scroll-behavior:smooth;}
+            .accountStatMediabtn{
+                position:static;
+                button{
+                    width:90px;
+                }
+            }
+        }
+    }
+    .accountStatModal {
+        .dt-search{
+            // text-align:right !important;
+        }
+    }
+    .sorting{margin:0 0 20px;
+        button{width:auto; height:32px; margin:0 4px 0 0; padding:0 10px; font-size:15px; border-radius:16px;}
+        .term{font-size:12px;}
+    }
+    .table-data,
+    .table-modal{min-width:800px;}
+    .company-contaniner{      
+        .modal{
+            .table.adAccountListTable{min-width:600px}
+            .table-modal:not(form[name='adv-show-form'] .table-modal){min-width: unset;}
+        }      
+    }
+}
+@include small{//768px
+    
+}
+@include mobile-500{//500px
+    .sorting button{font-size:0.8rem; padding:0 0.5rem;}
+}

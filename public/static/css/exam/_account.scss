@@ -1,0 +1,101 @@
+$input-pd:1.25rem; //20px
+$icon-pd:3.75rem; //60px
+
+@mixin effect($second:0.3s) {
+    transform: translateY(150%); visibility:hidden; transition: all linear $second;
+    &.effect{transform: translateY(0%); visibility:visible;}
+}
+
+
+//로그인,가입하기
+.account-container{
+    margin:0 auto;   
+    .card{
+        margin:7% auto 0; 
+        --bs-card-border-color:transparent; 
+        --bs-card-bg:inherit; max-width: 500px;
+    }
+    .card-title{
+        font-size:1.5rem; 
+        margin:2.5rem 0;
+    }
+    .card-body{
+        padding:0;
+    }
+    .btn-outline-primary{
+        display: block; 
+        width:100%; 
+        margin-top:1.5rem; 
+        border-radius:14px; 
+        height:4.375rem; 
+        text-align: center; 
+        font-size:1.25rem; 
+        --bs-btn-color:rgb(var(--bs-red-primary));
+        --bs-btn-border-color:rgb(var(--bs-red-primary));
+        &:hover{
+            --bs-btn-hover-bg:rgb(var(--bs-red-primary));
+            --bs-btn-hover-border-color:rgb(var(--bs-red-primary));
+        }
+        &:active{
+            background-color:var(--bs-btn-hover-bg); 
+            border-color:var(--bs-btn-hover-bg);
+        }
+    }
+
+    form{
+        > div{transition:all linear 0.5s; @include effect;        
+            i{position: absolute; top:52%; transform: translateY(-50%); left:$input-pd; font-size: 1.5rem; width: 1.5rem; color:rgb(var(--bs-gray-boulder));}           
+        }
+        .form-control{width:100%;height:4.375rem;padding:0 3.4rem;text-align:left;border-radius:14px;border: 1px solid rgb(var(--bs-gray-border));background-color: rgb(var(--bs-gray-softPeach));
+            &:-webkit-autofill,
+            &:-internal-autofill-selected {transition:background-color 5000s ease-in-out 0s;} 
+        }
+        .form-check{
+            .form-check-input{margin-top:0;}
+        }
+        .icon a{
+            color:rgb(var(--bs-gray-boulder));        
+            span.material-symbols-outlined{font-size:130%; vertical-align: middle; padding-right:0.25rem;}
+            &:hover{font-weight: 900; transition:0.2s;
+                span.material-symbols-outlined{transform: scale(1.4);}
+            }
+        }
+    }
+}
+
+
+//마이페이지
+.myPage-container{ 
+    h1{font-size:180%; font-weight:bold;}     
+    .container{
+        padding:0;margin:0;
+    }
+    .card{           
+        .card-body{
+            dl{
+                display: flex; justify-content: flex-start; margin:1rem 0; align-items:center;
+                dt{
+                    display:flex;
+                    justify-content:space-between;
+                    width:110px;
+                    padding-right:10px;
+                    position:relative;
+                    margin-right:0.5rem;
+                    &:after{
+                        content:':';
+                        position:absolute;
+                        right:0;
+                        top:0;
+                    }
+                }
+                dd{
+                    flex:1;
+                }
+            }
+        &::after{content: ''; display: block; clear: both;}
+        }
+    }
+    button{float:right;}
+}
+
+.user-nav p{display: none;}

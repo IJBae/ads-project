@@ -1,0 +1,1314 @@
+//공통
+.sub-contents-wrap{
+    flex:1; 
+    overflow:auto; 
+    padding:40px 2.9908vw 50px; 
+    margin-left:40px; 
+    transition:all 0.3s;
+    .reset-btn-wrap{//필터초기화
+        margin: 20px 0;
+        .reset-btn-box{
+            text-align: right;
+            button{
+                width: 92px;
+                height: 36px;
+                font-weight: 700;
+                font-size: 80%;
+                color:rgb(var(--bs-white));
+                border-radius: 7px;
+                background:rgb(var(--bs-red-primary));
+            }
+        }
+    }
+}
+//-------------------------------------------------통합광고관리-------------------------------------------------//
+//통합 광고 관리 페이지 adv-manager
+.adv-manager{
+    .search-wrap{
+        margin-bottom: 25px;
+        .search {
+            .term {
+                label {
+                    width:290px;
+                }
+            }
+        }
+    } 
+    .media-advertiser{
+        .d-flex {
+            .btn-primary{ //통합광고관리 매체 - 목표수량 버튼
+                width: 113px;
+                height: 38px;
+                margin-left:15px;
+                background:rgb(var(--bs-red-primary));
+                border-radius: 7px;
+                font-size: 14px;
+                font-weight: 700;
+                color: rgb(var(--bs-white));
+            }
+        }
+    }
+    div.dt-button-collection{//통합광고관리 메뉴버튼
+        padding:0;    
+        .export{display: none;}
+        button{text-align: left; font-size:90%; padding:0.3rem 0 0.3rem 0rem; width:100%;         
+            &:hover,&.dt-button-active{color:rgb(var(--bs-white)); background-color: rgb(var(--bs-red-primary));
+                > span{text-indent: 0.4rem;
+                    i.bi::before{animation:sidebarShake 0.3s infinite linear alternate;}
+                }            
+            }
+            span{display: block; padding:0.3rem 0 0.3rem 0.5rem; transition: all 0.4s;}
+            span.dt-down-arrow{display:none;}
+            &.active span{background-color: rgb(var(--bs-gray-300));
+            } 
+        } 
+        .dt-btn-split-wrapper{ transition:0.2s; }
+        .dt-btn-split-wrapper:active:not(.disabled) button{color:rgb(var(--bs-blue-science));}
+        .dt-btn-split-wrapper.active:not(.disabled) button{background-color:transparent;color:rgb(var(--bs-red-origin));
+            &:hover{background-color:rgb(var(--bs-gray-200));}
+            &.dt-btn-split-drop{background-color:transparent;}
+        }
+        h3{font-size: 1.25em !important;}
+    }
+    .tab-wrap{
+        margin:60px 0 0;
+    }
+    //캠페인/광고세트/광고 클릭시 보이는 content
+    .tab-content{position:relative;padding:0.75rem 0.75rem 1.75rem; border-radius:0 0 10px 10px; border:1px solid rgb(var(--bs-gray-gainsBoro)); border-top:0; background:rgb(var(--bs-white));
+        .btn-wrap{margin:0 0 12px;
+            .btn{height:27px; padding:0 15px; margin:0 0 5px; font-size:0.813rem; color:rgb(var(--bs-dark-metal)); line-height:27px; border-radius:14px;
+                &:hover,
+                &.active{color:rgb(var(--bs-white));}
+            }
+        }
+    }
+    .carelabs_btn{
+        width: 150px;
+        height: 43px;
+        padding: 2px 7px;
+        white-space: normal;
+        text-align: left;
+        line-height: 1.1;
+        border: 1px solid rgb(var(--bs-gray-border));
+        border-radius: 5px;
+        background: rgb(var(--bs-white));
+        overflow-y: hidden;
+        font-size: 85%;
+    }
+    .carelabs_btn.active{
+        color: rgb(var(--bs-red-primary));
+        border-color: rgb(var(--bs-red-primary));
+    }
+}
+
+//통합광고관리 - 캠페인,광고세트,광고 tab
+.nav-tabs{
+    > li{flex:1; margin:0; padding:0;}
+    .nav-link{position:relative; width:100%; overflow:hidden; padding:20px 0; font-size:1.250rem; color:rgb(var(--bs-dark-metal)); border:0; border-top-left-radius:10px; border-top-right-radius:10px; background:rgb(var(--bs-silver-aluminium)); display: flex; justify-content: center; align-items: center;
+        &:focus,
+        &:hover,
+        &:active{border:0;}
+        &.active{
+            padding:19px 0 20px;
+            border:1px solid rgb(var(--bs-dark-sea));
+            border-bottom:0;
+            &:before{
+                content:'';
+                width:100%;
+                height:3px;
+                position:absolute;
+                top:0;
+                left:0;
+                background:rgb(var(--bs-red-primary));
+            }
+        }
+        .selected{
+            display:none;
+            padding:.25em 1.75em;
+            margin:0 0 0 0.75em;
+            background-color: rgb(var(--bs-blue-biloba-flower));
+            border-radius:14px;
+            color:rgb(var(--bs-white));
+            font-size: 80%;
+            transition:0.5s;
+        }
+    } 
+}
+
+//회계관리 - 미수금 관리 - 입금내역
+.regi-wrap{margin:0 0 20px; padding:20px; text-align:center; border:1px solid rgb(var(--bs-gray-border)); background:rgb(var(--bs-white));
+    input{padding:.375rem .5rem; font-size:13px;
+        &:not(:first-child){margin:0 0 0 5px;}
+        &.form-control.data-calendar {
+            padding:14px 10px;
+            width:120px;
+        }
+    }
+    .btn{min-width:100px; font-size:13px;}
+}
+
+//회계관리 - 미수금 관리 - 레이아웃
+.half{
+    .search-wrap{margin:0 0 30px;
+        .search{padding:35px 20px;}
+    }
+    .table-default{min-width:600px;}
+}
+
+//통합광고관리 - 광고주/메체/매체별광고주 버튼
+.client-list{
+    .row{--bs-gutter-x:8px; overflow-y:auto;
+        .col{flex:0 0 auto; width:calc(100% / 7); margin:0 0 8px; position:relative;
+            & > .inner{position:relative; height:100%; min-height:45px; box-sizing:border-box;border-radius:5px;
+                &.active{color:rgb(var(--bs-red-primary)); border-color:rgb(var(--bs-red-primary));}
+            }
+            button{
+                width:100%;
+                height:100%;
+                position:relative;
+                padding:2px 7px;
+                white-space:normal;
+                text-align:left;
+                line-height:1.1;
+                background:rgb(var(--bs-white));
+                border:1px solid rgb(var(--bs-gray-border));
+                overflow:hidden;
+                font-size: 85%;
+                // &:hover{
+                //     background:rgba(var(--bs-red-primary),0.7);
+                //     span {position:relative;z-index:1;color:rgb(var(--bs-white));}
+                // }
+                &.on{//on이 먼저 선언되어야함 그 다음이 active
+                    color: rgb(var(--bs-white));
+                    background-color:rgb(var(--bs-gray-700));
+                    + .progress {
+                        .txt {
+                            color:rgb(var(--bs-white));
+                        }
+                    }
+
+                }
+                &.active{
+                    position:relative;
+                    z-index:1;
+                    background:rgb(var(--bs-black-cement));
+                    border:1px solid rgb(var(--bs-black-cement));
+                    box-shadow:0 3px 7px rgb(var(--bs-gray-cloud));
+                    color: rgb(var(--bs-white));font-weight:bold;
+                    + .progress {
+                        .txt {
+                            color:rgb(var(--bs-white));
+                        }
+                    }
+                }
+                &.alert{margin:0;
+                    &::before{position:absolute; top:0; left:0; width:100%; height:3px; content:''; background:rgb(var(--bs-red-primary));}
+                }
+                span{
+                    display: inline-block;
+                }
+            }
+            .progress{position:absolute; bottom:0; left:0; width:100%; height:3px; overflow:visible; border-radius:0; background:none; z-index:1;
+                .progress-bar{height:3px; background:rgb(var(--bs-yellow-orange));}
+                .txt{position:absolute; right:10px; bottom:3px; font-size:0.6rem;}
+            }
+        }
+    }
+    &.biz{
+        .row{
+            .col{width:160px;}
+        }
+    }
+}
+
+//통합광고관리 - 기타광고관리/자동화관리 - 매체/광고주/이벤트번호/이벤트구분
+.section{
+    + .section{margin:50px 0 0;}
+    // &.custom-margin-box-1{
+    //     margin-top:20px;
+    // }
+    &.media-advertiser{//통합광고관리 - 매체별광고주
+        .filter_media_btn .media_account_icon{
+            width: 16px;
+            height:16px;
+            margin-bottom: -2px; 
+        }
+        .filter_media_btn .media_account_name{
+            padding-left: 0.5rem;
+            width: 87%;
+        }
+        .filter_media_btn .facebook{
+            // background: url(/img/ico_facebook.png);
+            @include bg('ico_facebook.png', 0, 0);//var.scss
+            background-size: cover;
+        }
+        .filter_media_btn .google{
+            // background: url(/img/ico_google.png);
+            @include bg('ico_google.png', 0, 0);//var.scss
+            background-size: cover;
+        }
+        .filter_media_btn .kakao{
+            // background: url(/img/ico_kakao.png);
+            @include bg('ico_kakao.png', 0, 0);//var.scss
+            background-size: cover;
+        }
+    }
+}
+
+.title-area{display:flex; align-items:center; margin:0 0 20px; 
+    .page-title{
+        font-size:1.750rem;
+        // min-width: 200px; 
+        @include bold;//var.scss
+    }
+    .title-disc{margin:0 0 0 15px;}
+}
+
+.content-title{position:relative; display:flex; align-items:center; margin:0 0 18px; font-size:1.250rem; @include bold;//var.scss
+    &:after{flex:1; width:100%; height:2px; margin:0 0 0 12px; content:''; background:rgb(var(--bs-gray-gainsBoro));}
+    .bi{width:19px; height:19px; margin:0 8px 0 0; font-size:0.750rem; text-align:center; color:rgb(var(--bs-white)); border-radius:50%; background:rgb(var(--bs-red-primary));
+        &:before{line-height:19px;}
+    }
+    &.toggle{cursor:pointer;}
+    &.folded{
+        + div{display:none !important;}
+        .bi{
+            &:before{transform:rotate(180deg);}
+        }
+    }
+}
+
+//통합광고관리 - 매체별 광고주
+.media-advertiser {
+    & > .d-flex {
+        width:100%;
+        margin-bottom:18px;
+        h3{
+            margin-bottom: 0;
+        }
+        &:after{
+            content:'';
+            flex:1;
+            width:100%;
+            height:2px;
+            margin:16px 0 0 12px; 
+            background:rgb(var(--bs-gray-gainsBoro));
+        }
+    }
+    //매체별광고주 하단 버튼
+    .media-advertiser-list{
+        .col .inner{
+            position:relative;
+            &.tag_inactive{
+                opacity:0.5;
+            }
+            .status_bar { //default 제한적승인/비승인 표기 없음
+                display:none;
+            }
+            &.approved_limited, &.disapproval {
+                .status_bar {
+                    display: flex;
+                    justify-content: flex-end;
+                    width: 10px;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    z-index: 2;
+                }
+            }
+            &.approved_limited {
+                .approved_limited {
+                    width: 5px;
+                    height: 100%;
+                    background-color: rgb(var(--bs-green-mid));
+                }
+            }
+            &.disapproval {
+                .disapproval {
+                    width: 5px;
+                    height: 100%;
+                    background-color: rgb(var(--bs-red-primary));
+                }
+            }
+            .db_ratio{//하단 목표수량 표기
+                position:absolute;
+                bottom:0;
+                left:0;
+                width:100%;
+                z-index:1;
+                & > .inner{
+                    p{
+                        &.over{
+                            color:rgb(var(--bs-red-primary));
+                            animation:blink-effect 0.5s ease-in-out infinite alternate;
+                        }
+                        margin-right:12px;
+                        font-size:.6rem;
+                        text-align:right;
+                        
+                    }
+                    .bar{
+                        height:2px;
+                        background-color:rgb(var(--bs-yellow-beer));
+                    }
+                    
+                }
+                
+            }
+            & > .active + .db_ratio { //클릭시
+                & > .inner{
+                    margin:0 2px 2px;
+                    p{
+                        color:rgb(var(--bs-white));
+                        &.over{
+                            color:rgb(var(--bs-yellow-beer));
+                            animation:blink-effect 0.5s ease-in-out infinite alternate;
+                        }
+                    }
+                }
+            }
+            & > .active {
+                .media_account_icon{
+                    filter: brightness(0.7) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(208deg) brightness(111%) contrast(101%);
+                }
+            }
+        }
+    } 
+}
+
+//통합광고관리 - 목표수량 설정 모달
+.sub-contents-wrap {
+    .dt-container{
+        table.dataTable{
+            &.dbCountTable {
+                padding-bottom:0;
+                tbody{
+                    tr {
+                        td{
+                            vertical-align: middle;
+                        }
+                    }
+                }
+                .canmanage{
+                    font-weight: bold;
+                }
+                .media_box{
+                    i{
+                        width:15px;height:15px;background-size: cover;
+                    }
+                    p{
+                        &.canmanage{
+                            font-weight: bold;   
+                        }
+                        margin-left: 4px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.col.half {
+    flex:0 0 auto;
+    width:50%;
+    .search-wrap .search .input{
+        input[type="text"]{font-size:90%;}
+        .btn-primary{height: 50px;}
+        .form-select{padding: .375rem 1.25rem .375rem .75rem;}
+    }
+}
+
+.search-wrap{
+    overflow:hidden;
+    margin:0 0 50px;
+    border:1px solid rgb(var(--bs-gray-border));
+    border-radius:10px 10px 0 0;
+    .reportData{
+        dl{
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+    }
+    .search{
+        padding:35px 10.4167vw;
+        text-align:center;
+        background:rgb(var(--bs-white));
+        .term{
+            flex:1;
+            height:50px;
+            margin:0 15px 0 0;
+            padding:0 10px;
+            border-top:2px solid rgb(var(--bs-gray-platinum));
+            border-bottom:2px solid rgb(var(--bs-gray-platinum));
+            label{
+                position:relative;
+                width:100%;
+                display:flex;
+                align-items:center;
+            }
+            input[type="text"] {
+                flex: 1;
+                width: 100%;
+                border: 0;
+                margin-right:10px;
+                font-size:.95rem;
+            }
+            input[data="daterangepicker"] {
+                text-align: center;
+            }
+            span {
+                margin: 0 20px;
+            }
+            button {
+                width: 28px;
+                color: rgb(var(--bs-red-primary));
+            }
+            i {
+                color: rgb(var(--bs-red-primary));
+            }
+        }
+        .term-small{
+            flex:0 0 auto;
+            // width:270px;
+        }
+        .input{
+            display:flex;
+            flex:1;
+            input[type="text"]{
+                flex: 1;
+                width: 100%;
+                height: 50px;
+                box-sizing: border-box;
+                margin: 0 10px 0 0;
+                padding: 0 15px 0 45px;
+                border: 1px solid rgb(var(--bs-gray-600));
+                border-radius: 25px;
+                @include bg('search.svg', 24px, center);//var.scss
+                &:focus {
+                    border-color: transparent;
+                    box-shadow: 0 0 0 0.25rem rgba(var(--bs-red-rose-madder), 0.271);
+                    caret-color: rgb(var(--bs-red-origin));
+                    &::placeholder {
+                        color: rgb(var(--bs-red-origin));
+                        text-indent: 0.75rem;
+                        transition: text-indent 0.3s;
+                    }
+                }
+            }
+            .btn-primary {
+                width: 115px;
+                height: 52px;
+                font-weight: 700;
+                color: rgb(var(--bs-white));
+                border-radius: 7px;
+                background: rgb(var(--bs-red-primary));
+            }
+            .btn-special {
+                width: 115px;
+                height: 52px;
+                font-weight: 700;
+                color: rgb(var(--bs-white));
+                border-radius: 7px;
+                background: rgb(var(--bs-blue));
+            }
+        }
+        // * + .input{margin:0 0 0 20px;}
+    }
+    .detail {
+        padding: 20px 0;
+        text-align: center;
+        background: rgb(var(--bs-gray-250));
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        .col {
+            flex: 0 0 auto;
+            width: auto;
+            padding: 0 20px;
+            color: rgb(var(--bs-gray-600));
+            font-weight: 500;
+            display: flex;
+            flex-flow: wrap column;
+            dt {
+                margin: 0 0 5px;
+                font-size: 1rem; // 주석 처리된 부분을 확인하세요
+                color: rgb(var(--bs-dark-metal));
+            }
+        }
+    }
+    select{
+        width:20%;
+        height:50px; 
+    }
+    &.type-single {
+        .input{
+            flex:0 0 auto;
+            &.align-center{
+                justify-content:center;
+            }
+        }
+        
+    }
+}
+
+
+
+/*
+.dataTables_scrollBody{ /*table 스크롤바 안보임
+    -ms-overflow-style: none; /* 익스플로러, 앳지
+    scrollbar-width: none; /* 파이어폭스
+
+    &::-webkit-scrollbar {
+        display: none; /* 크롬, 사파리, 오페라
+    }
+}
+*/
+
+:root {
+    --dt-row-selected: 130,190,255;
+    --dt-row-selected-text: 0,0,0;
+}
+.dataTable tfoot .header th{
+    background-color:rgb(var(--bs-black)); 
+    color:rgb(var(--bs-white));
+}
+.table-default tfoot .header th:not(:last-child) {
+    border-right: 1px dashed rgb(var(--bs-gray-pearl));
+}
+.inner button.disapproval::after{ 
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgb(var(--bs-red-primary));
+}
+.inner button.tag-inactive{
+    opacity: 0.5;
+}
+.campaign-total td{
+    text-align: center !important;
+}
+.hl-red{
+    color: rgb(var(--bs-red-origin));
+}
+.dt-buttons{
+    position: initial !important;
+}
+.bidamount{
+    margin-top:10px;
+}
+.bidamount_type{
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: 11px;
+    color: rgb(var(--bs-white));
+    font-weight: bold;
+    background: rgb(var(--bs-blue-cobalt));
+    height:16px;
+    line-height:15px;
+    padding:0 10%;
+    border-radius: 15px;
+}
+.bidamount_strategy, .campaign_bidamount{
+    font-size: 9px;
+}
+.modify_tag:hover{
+    cursor: pointer;
+}
+.name_wrap{
+    display: flex;
+    align-items: flex-start;
+}
+.name_wrap .name_left_wrap{
+    margin-right:10px;
+    width:50px;
+}
+.name_wrap .name_left_wrap img{
+    width:100%;
+    position:relative;
+    z-index: 1;
+}
+.name_wrap .name_left_wrap img:hover{
+    scale: 3;
+}
+.view_btn{
+    position: absolute;
+    right:3px;
+    top:5px;
+    z-index:2;
+    &>a { 
+        display:block;
+        background:rgba(var(--bs-dark-onyx), 0.25);
+        padding:1px 5px 0;
+        border-radius:4px;
+        color:rgb(var(--bs-white));
+        font-size:11px;
+        .bi-search {
+            &:before{
+                color:rgb(var(--bs-white));
+                font-size:93%;
+                vertical-align:middle;
+            }
+        }
+    }
+}
+
+/* 20240509 통합광고 관리 tab하단 table
+광고탭 클릭 시 (제한적승인/비승인) 스타일 변경 */
+.adv-table{
+    tbody{
+        .mediaName{
+            padding-right:20px;
+            min-height: 25px;
+        }
+       
+        .memo_count {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 20px;
+            height: 20px;
+            line-height:20px;
+            background-color: rgb(var(--bs-red-primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: rgb(var(--bs-white));
+        }
+        tr {
+            td:nth-child(2){
+                position: relative;
+                .btn_box_open{
+                    position:absolute;
+                    right:0;
+                    top:50%;
+                    transform:translateY(-50%);
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    flex-flow:column wrap;
+                    &.mr-3 {
+                        margin-right:-3px;
+                    }
+                    span{
+                        display: block;
+                        width:8px;
+                        height:8px;
+                        background-color: rgb(var(--bs-gray-pastel));
+                        border-radius:100%;
+                        margin-bottom:5px;
+                    }
+                    .badge {
+                        width:15px;
+                        height:15px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 9px;
+                        text-indent:-2px;
+                    }
+                }
+            }
+            &.disapproval,
+            &.approved_limited {
+                td:nth-child(2) {
+                    &::after {
+                        width: auto;
+                        position:absolute;
+                        left: 0;
+                        top: 5px;
+                        right:initial;
+                        bottom: initial;
+                        padding: 0 3%;
+                        line-height: 1.5;
+                        background:rgba(var(--bs-dark-onyx), 0.25);
+                        border-radius:0 50px 50px 0;
+                        color: rgb(var(--bs-white));
+                        transform: translate(0, 0);
+                    }
+                }
+            }
+            &.disapproval td:nth-child(2) {
+                background-color:rgb(var(--bs-pink-salmon));
+                &::after {
+                    content: "비승인";
+                    display: block;
+                    font-size: 12px;
+                    text-align: right;
+                }
+            }
+            &.approved_limited td:nth-child(2) {
+                background-color: rgb(var(--bs-pink-limited));
+
+                &::after {
+                    content: "제한적 승인";
+                    display: block;
+                    font-size: 12px;
+                    text-align: right;
+                }
+            }
+            &.off {
+                &.disapproval td:nth-child(2),
+                &.approved_limited td:nth-child(2) {
+                    background-color:rgb(var(--bs-gray-600));
+                }
+                td {
+                    background-color: rgb(var(--bs-gray-600)) !important;
+                    select.form-select{
+                        -webkit-filter: invert(40%);
+                        filter: invert(40%);
+                    }
+                    i {
+                        -webkit-filter: invert(40%);
+                        filter: invert(40%);
+                    }
+                    .bi-search {
+                        -webkit-filter: none;
+                        filter: none;
+                    }
+                }
+            }
+            td:nth-child(3){
+                position: relative;
+                .btn_box{
+                    display:none;
+                    position:absolute;
+                    left:0;
+                    top:0px;
+                    background-color: rgb(var(--bs-white-snow));
+                    width:138px;
+                    border:1px solid rgb(var(--bs-gray-pastel));
+                    z-index:1;
+                    li{
+                        padding:6px 0;
+                        border-bottom: 1px dashed rgb(var(--bs-gray-pastel));
+                        button:hover{
+                            color:rgb(var(--bs-red-primary));
+                        }
+                        &:last-child{
+                            border-bottom: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.accountStatModal {
+    .dt-length {display:none;}
+    input[type="search"] {
+        height: 33px;
+        box-sizing: border-box;
+        margin: 0 10px 0 0;
+        padding: 0 15px 0 55px;
+        border: 1px solid rgb(var(--bs-gray-600));
+        border-radius: 25px;
+        background: url(/img/search.svg) no-repeat 24px center;
+    }
+}
+//-------------------------------------------------통합DB-------------------------------------------------//
+// 통합DB다운로드 20240617
+.db-manage-contaniner {
+    form.section {
+        .d-flex {
+            .form-select {
+                width:150px;
+                height:48px;
+                line-height:48px;
+                padding:0 2.25rem 0 .75rem;
+            }
+            
+        }
+    }
+}
+
+//통합DB db-manage-contaniner
+.db-manage-contaniner{
+    .search-wrap{
+        border-radius: 10px; 
+        overflow:auto;
+        margin-bottom: 25px;
+        .search {
+            .term{
+                width:290px;
+            }
+        }
+    }
+    .dt-search {
+        display:flex;
+        align-items:center;
+        text-align: center;
+        label {
+            margin:0 10px 0 0;
+        }
+        input[type="search"] {
+            height: 33px;
+            box-sizing: border-box;
+            margin: 0 10px 0 0;
+            padding: 0 15px 0 55px;
+            border: 1px solid rgb(var(--bs-gray-600));
+            border-radius: 25px;
+            background: url(/img/search.svg) no-repeat 24px center;
+        }
+    }    
+    .detail.minWd{//통합DB (인정/중복/성별불량/나이불량/콜불량/번호불량/테스트/이름불량......)
+        flex-wrap:wrap;
+        min-width:1000px;  
+        .col{
+            padding:0;
+            flex:1 0 auto;
+            cursor:pointer;
+            &:hover, &.active{
+                color:rgb(var(--bs-red-primary));
+            }
+            dt{
+                font-size: 1rem;
+            }
+            &:hover,&.active{
+                dd{
+                    font-weight:900;
+                }
+            }
+        }        
+    }
+}
+
+//통합 DB 다운로드 & 광고주/광고대행사
+.form-control{
+    width:100%;
+    height:100%;
+    padding:14px 15px; 
+    text-align:left; 
+    line-height:1.4; 
+    border:1px solid rgb(var(--bs-gray-border)); 
+    border-radius:5px; 
+    background:rgb(var(--bs-white));
+    &.active{
+        color:rgb(var(--bs-red-primary)); 
+        border-color:rgb(var(--bs-red-primary));
+    }
+    &.alert{
+        margin:0;
+        &::before{
+            position:absolute; 
+            top:0; 
+            left:0; 
+            width:100%; 
+            height:3px; 
+            content:''; 
+            background:rgb(var(--bs-red-primary));
+        }
+    }
+}
+
+
+//-------------------------------------------------기타광고관리-------------------------------------------------//
+//기타광고관리 - 상단 검색
+.etc-contents-wrap {
+    .table-responsive {
+        position:relative;overflow-x: visible;
+        .latestUpdateTime {
+            position:absolute;top:8px;right:0;
+        }
+        .dt-search {
+            display:flex;
+            align-items:center;
+            text-align: center;
+            label {
+                margin:0 10px 0 0;
+            }
+            input[type="search"] {
+                height: 33px;
+                box-sizing: border-box;
+                margin: 0 10px 0 0;
+                padding: 0 15px 0 55px;
+                border: 1px solid rgb(var(--bs-gray-600));
+                border-radius: 25px;
+                background: url(/img/search.svg) no-repeat 24px center;
+            }
+        }
+    }
+    .search-wrap{
+        .search {
+            .term{
+                width:290px;
+            }
+        }
+        
+    }
+}
+//-------------------------------------------------자동화목록-------------------------------------------------//
+//자동화 목록 - 상단 검색&버튼
+.automationContent {
+    .dt-container {
+        .search-control-box {
+            display:flex;
+            justify-content:space-between;
+            margin-top:30px;
+            .dt-search {
+                display:flex;
+                align-items:center;
+                label {
+                    margin:0 10px 0 0;
+                }
+                input[type="search"] {
+                    width:100%;
+                    height: 33px;
+                    box-sizing: border-box;
+                    margin: 0 10px 0 0;
+                    padding: 0 15px 0 55px;
+                    border: 1px solid rgb(var(--bs-gray-600));
+                    border-radius: 25px;
+                    background: url(/img/search.svg) no-repeat 24px center;
+                }
+            }
+            .dt-buttons{
+                width:auto;
+                margin-bottom:0;
+                .btn-secondary{
+                    all: unset;
+                    margin-left:5px;
+                    &:first-of-type {
+                        margin-left:0;
+                    }
+                    .btn-outline-danger {
+                        // color:rgb(var(--bs-black));
+                        &:hover{
+                            color:var(--bs-btn-hover-color);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+}
+
+
+
+//-------------------------------------------------이벤트관리-------------------------------------------------//
+// 이벤트관리 - 팝업 - input radio
+.radio-wrap {
+    flex-flow:wrap row;
+}
+.form-check {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    .form-check-input {
+        margin:-1px 5px 0 -1.5em;
+    }
+}
+
+//이벤트관리 - 이벤트 수정 팝업 카카오싱크 input
+.kakaosync {
+    .desc {
+        .form-control{
+            display:inline-block;
+            width:auto;
+            height:30px;
+        }
+    }
+}
+
+/* 업데이트 애니메이션 */
+tr.updating td:first-child{
+    animation: updating-background 2s linear infinite forwards;
+    background-image: linear-gradient(to right, transparent 8%, rgb(var(--bs-gray-ash)) 55%, transparent 80%);
+    background-size: 200%;
+    box-shadow: none !important;
+}
+//-------------------------------------------------회원관리-------------------------------------------------//
+//회원관리 - 광고주/광고대행사 #search-results 없음. (제니스 확인해보기)
+// .adv-show-table .p_name #search-results {position: absolute; background-color: rgb(var(--bs-white));}
+
+//회원관리 - 광고주/광고대행사 팝업
+.company-contaniner .modal form.form-search-wrap {
+    overflow-x:hidden !important;
+    .adaccount-search {
+        display: flex;
+        align-items: center;
+        padding:20px;
+        margin-bottom:10px;
+        border:1px solid rgb(var(--bs-gray-pearl));
+        background:rgb(var(--bs-white-spring));
+        h3 {
+            margin-right:20px;
+            font-size:18px;
+        }
+        .ada-search-box {
+            flex:1;
+            input{
+                border-radius:50px;
+                text-align:left;
+            }
+        }
+    }
+}
+
+.ui-widget.ui-widget-content {
+    padding:15px 10px;
+    border-radius:20px;
+    li {
+        .ui-menu-item-wrapper {
+            padding:1%;
+        }
+        .ui-state-active,
+        .ui-widget-content .ui-state-active,
+        .ui-widget-header .ui-state-active,
+        a.ui-button:active,
+        .ui-button:active,
+        .ui-button.ui-state-active:hover {
+            border: 1px solid rgb(var(--bs-gray-pearl));
+            background: rgb(var(--bs-gray-pearl));
+            font-weight: normal;
+            color:rgb(var(--bs-dark-dune));
+        }
+    }
+}
+
+//회원관리 - 이름 클릭시 회원관리 팝업
+.userGroup {
+    & > .inner{
+        display:flex;
+        flex-flow:wrap row;
+        & > .form-check{
+            justify-content:flex-start;
+            width:23%;
+            margin:1%;
+        }
+    }
+    
+}
+.userPermission {
+    .user-title-db {margin:0 0 10px;font-size:15px;}
+    & > .inner{
+        display:flex;
+        flex-flow:wrap row;
+        & > .form-check {
+            display:block;
+            width:23%;
+            margin:1%;
+        }
+    }
+}
+
+
+
+.form-control, .form-select{
+    &:focus{border-color:transparent; box-shadow: 0 0 0 0.25rem rgba(var(--bs-red-rose-madder), 0.271); caret-color:rgb(var(--bs-red-origin));
+        &::placeholder{color:rgb(var(--bs-red-origin)); text-indent:0.5rem; transition: text-indent 0.3s;}
+    }    
+}
+.account-container{
+    input.form-control{
+        &:focus{box-shadow: 0 0 0 0.25rem rgb(var(--bs-blue-powder)); caret-color:rgb(var(--bs-blue-light-steel)); color:rgb(var(--bs-blue-light-steel));
+            &::placeholder{color:rgb(var(--bs-blue-light-steel));}
+        }
+    }
+}
+
+input:-internal-autofill-selected {color:rgb(var(--bs-blue-light-steel));}
+.none{appearance:none;} //시간차관리 사용
+
+
+//시간차관리
+.dayOff-contanier {
+    .row{
+        .col:last-of-type {
+            .form-control {
+                width:80%;
+                display:inline-block;
+                + .bi-calendar2-week {
+                    margin-left:10px;
+                    font-size:140%;
+                }
+            }
+            .form-select{
+                border:1px solid rgb(var(--bs-gray-border));
+                padding:12px 15px;
+            }
+        }
+    }
+}
+.dayOff-application-table {
+    .btn{
+        padding: 0.3rem 0.5rem;
+        border-radius: 0.25rem;
+        border: 1px solid rgb(var(--bs-gray-border));
+        font-size:0.813rem;
+        &:hover, &:active {
+            background: rgb(var(--bs-black));
+            color: rgb(var(--bs-white));
+            border-color: rgb(var(--bs-black));
+        }
+    }
+}
+
+
+@keyframes updating-background {
+    0% {background-position: 100% 0}
+    100% {background-position: -100% 0}
+}
+
+@keyframes blink-effect {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+@include x-large{//1400px
+    .title-area{flex-wrap:wrap;
+        .title-disc{width:100%; margin:10px 0 0;}
+    }
+    .search-wrap{
+        .search{padding:35px 30px;}
+        .detail{
+            .col{flex:0 0 auto; width:25%;
+                &:nth-child(n+5){margin-top:15px;}
+            }
+        }
+    }
+    .db-manage-contaniner{
+        .search-wrap{
+            .detail{
+                .col{width:auto;
+                    &:nth-child(n+5){margin-top:0;}
+                }
+            }
+        }
+    }   
+    .half + .half{margin-top:40px;}
+    .col.half {flex:1;width:auto;}
+}
+
+@include large{//1200px
+    .client-list{
+        .row{flex-wrap:wrap; max-height:250px;
+            .col{
+                width:25%;
+                & > .inner{
+                    min-height:40px;
+                }
+            }
+        }
+    }
+    .adv-table{
+        tbody{
+            tr{
+                td:nth-child(3){
+                    .btn_box{
+                        li{
+                            padding:8px 0;
+                            font-size:14px;
+                        }
+                    } 
+                }
+            }
+        }
+    } 
+}
+@include medium{//1024px
+    .search-wrap{
+        margin:0 0 20px;
+        .search{flex-wrap:wrap; padding:20px;
+            .term{flex:0 0 auto;width:100%;height:40px;margin:0;}
+            .input{flex:0 0 auto; width:100%; margin:20px 0 0;
+                &:first-child{margin:0;}
+                input[type="text"]{height:40px;}
+                .btn-primary{width:80px; height:40px;}
+                .btn-special{width:80px; height:40px;}
+            }
+            select + .input{width:78%;}
+        }
+
+        .detail{padding:15px 0;
+            .col{
+                dt{font-size:1rem;}
+            }
+        }
+        select{height:40px; margin:20px 0 0 0;width:19%;}
+    }
+    .half{
+        .search-wrap{margin:0 0 20px;
+            .search{padding:20px;}
+        }
+        .table-default{min-width:800px;}
+    }
+    .nav-tabs{
+        .nav-link{padding:10px 0; flex-direction: column; flex-wrap: nowrap; height: 100%;
+            &:focus,
+            &:hover,
+            &:active{border:0;}
+            &.active{padding:9px 0 10px; border:1px solid rgb(var(--bs-dark-sea)); border-bottom:0;
+                &:before{position:absolute; top:0; left:0; width:100%; height:3px; content:''; background:rgb(var(--bs-red-primary));}
+            }
+            > span{display: block;}
+
+            .selected{margin: 0.75em auto 0; padding: 0.25em 1.25em; font-size: 0.75em;} 
+        }
+    }
+    .adv-manager{
+        .media-advertiser{
+            .d-flex{
+                .dbCountBtn{
+                    height: 30px;
+                    // width: 100px;
+                    margin-left:0;
+                    font-size:13px;
+                }
+            }
+        }
+        .search-wrap{
+            .search{
+                .term {
+                    label{
+                        width:100%;
+                    }
+                }
+            }
+        }
+    }
+    .adv-table {
+        tbody{
+            tr{
+                td:nth-child(3){
+                    .btn_box{
+                        width:100px;
+                        button{
+                            font-size:90%;
+                        }
+                    }
+                }
+            }
+        }
+    } 
+    .etc-contents-wrap {
+        .search-wrap{
+            .search{
+                .term{
+                    width:100%;
+                }
+            }
+        }
+    }
+    .db-manage-contaniner{
+        .search-wrap{
+            .search{
+                .term{
+                    width:100%;
+                }
+            }
+        }
+    }
+}
+@include small{//768px
+    .daterangepicker .drp-calendar.left{clear:none;}
+}
